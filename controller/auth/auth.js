@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 // user schema is
 const User = require("../../models/user/user")
 
+// Register
 const registerUser = async (req, res) => {
     try {
         // check if user already exist
@@ -32,11 +33,42 @@ const registerUser = async (req, res) => {
         
         // save user and return response
         const user = await newUser.save();
-        console.log("saved user")
         res.status(201).json(user)
     } catch (err) {
         res.status(500).json(err)
     }
 }
 
-module.exports = registerUser;
+// Login
+const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email });
+        if(!user) {
+            return res.status(400).json("User is not registered")
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password);
+
+        if(!validPassword){
+            return res.status(400).json("wrong password!")
+        }
+
+        if(user && validPassword) {
+            const token = jwt.sign(user.email, process.env.TOKEN_KEY)
+
+            user.token = token;
+
+            return res.status(200).json(user)
+        }
+
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+module.exports = {
+    registerUser,
+    loginUser,
+}

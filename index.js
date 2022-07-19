@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 // import routes
-const registerRoute = require("./routes/auth/auth")
+const registerRoute = require("./routes/apis")
 dotenv.config()
 
 const app = express();
