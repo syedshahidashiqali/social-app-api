@@ -1,16 +1,14 @@
 
 const User = require("../models/user")
+const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../apiHelpers")
 
 // delete user by id
 const deleteUser = async (req, res) => {
     try {
-        const userId = req.params.id;
-        const user = await User.findById(userId)
-
-        await User.findByIdAndDelete(userId)
-        return res.status(200).json({message: "User has been deleted", deletedUser: user})
+        await User.findByIdAndDelete(req.params.id)
+        return res.status(200).json(apiSuccess("User has been deleted"))
     } catch(err) {
-        res.status(500).json(err)
+        res.status(500).json(apiError(err))
     }
 }
 
@@ -18,14 +16,10 @@ const deleteUser = async (req, res) => {
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
-        if(users.length === 0) {
-            return res.status(404).json("There is not any user resgistered.")
-        }
-
-        return res.status(200).json(users)
+        return res.status(200).json(apiSuccessWithData("All Users in database", users))
         
     } catch(err) {
-        res.status(500).json(err)
+        res.status(500).json(apiError(err))
     }
     
 }
@@ -34,9 +28,9 @@ const getAllUsers = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.id, { $set: req.body })
-        res.status(200).json("Acount has been updated!");
+        res.status(200).json(apiSuccess("Acount has been updated!"));
     } catch(err) {
-        res.status(500).json(err)
+        res.status(500).json(apiError(err))
     }
 }
 

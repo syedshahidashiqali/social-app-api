@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../apiHelpers")
 
 // user schema is
 const User = require("../models/user")
@@ -12,7 +13,7 @@ const registerUser = async (req, res) => {
         const oldUser = await User.findOne({email: req.body.email});
 
         if (oldUser) {
-            return res.status(409).json("User Already Exist. Please Login");
+            return res.status(409).json(apiError("User Already Exist. Please Login"));
         }
 
         // create new user
@@ -25,17 +26,12 @@ const registerUser = async (req, res) => {
             password: hashedPassword,
             isAdmin: req.body.isAdmin,
         })
-
-        // create token
-        const token = jwt.sign(req.body.email, process.env.TOKEN_KEY)
-
-        newUser.token = token;
         
         // save user and return response
         const user = await newUser.save();
-        res.status(201).json(user)
+        res.status(201).json(apiSuccessWithData("User is Created", user))
     } catch (err) {
-        res.status(500).json(err)
+        res.status(500).json(apiError(err))
     }
 }
 
@@ -46,13 +42,13 @@ const loginUser = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if(!user) {
-            return res.status(400).json("User is not registered")
+            return res.status(400).json(apiError("User is not registered"))
         }
 
         const validPassword = await bcrypt.compare(password, user.password);
 
         if(!validPassword){
-            return res.status(400).json("wrong password!")
+            return res.status(400).json(apiError("wrong password!"))
         }
 
         if(user && validPassword) {
@@ -60,11 +56,11 @@ const loginUser = async (req, res) => {
 
             user.token = token;
 
-            return res.status(200).json(user)
+            return res.status(200).json(apiSuccessWithData("User token has been generated", token))
         }
 
     } catch (err) {
-        res.status(500).json(err)
+        res.status(500).json(apiError(err))
     }
 }
 
