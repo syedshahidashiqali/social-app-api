@@ -3,7 +3,8 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
 // import routes
-const registerRoute = require("./routes/apis")
+const usersRoute = require("./routes/apis")
+const adminRoute = require("./routes/admin/admin-apis")
 dotenv.config()
 
 const app = express();
@@ -12,7 +13,8 @@ const app = express();
 app.use(express.json());
 
 // Routes
-app.use("/api/v1/users", registerRoute);
+app.use("/api/v1/users", usersRoute);
+app.use("/api/v1/users", adminRoute);
 
 const PORT = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI;
