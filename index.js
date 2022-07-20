@@ -1,10 +1,14 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
+
+// import connection DB func
+const { connectDB } = require("./config/db");
 
 // import routes
 const usersRoute = require("./routes/apis")
 const adminRoute = require("./routes/admin/admin-apis")
+const postRoute = require("./routes/apis")
+
 dotenv.config()
 
 const app = express();
@@ -15,14 +19,11 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/users", adminRoute);
+app.use("/api/v1/posts", postRoute);
 
 const PORT = process.env.PORT || 5000;
-const uri = process.env.MONGODB_URI;
 
-const connection = mongoose.connection;
-
-mongoose.connect(uri)
-
-connection.once("open", () => console.log("MongoDB Database connection has been established successfully."));
+// connect DB
+connectDB()
 
 app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`))

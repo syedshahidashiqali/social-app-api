@@ -17,13 +17,13 @@ const deleteUser = async (req, res) => {
 // get all users
 const getAllUsers = async (req, res) => {
     try {
-
         const users = await User.find();
-        return res.status(200).json(users)
-        
         if(users.length === 0) {
             return res.status(404).json("There is not any user resgistered.")
         }
+
+        return res.status(200).json(users)
+        
     } catch(err) {
         res.status(500).json(err)
     }
