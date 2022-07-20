@@ -9,7 +9,7 @@ const { connectDB } = require("./config/db");
 
 // import routes
 const usersRoute = require("./routes/apis")
-const adminRoute = require("./routes/admin/admin-apis")
+const adminRoute = require("./routes/admin-apis")
 const postRoute = require("./routes/apis")
 
 dotenv.config()
