@@ -8,7 +8,7 @@ const deleteUser = async (req, res) => {
         await User.findByIdAndDelete(req.params.id)
         return res.status(200).json(apiSuccess("User has been deleted"))
     } catch(err) {
-        res.status(500).json(apiError(err))
+        res.status(500).json(apiError(err.message))
     }
 }
 
@@ -19,7 +19,7 @@ const getAllUsers = async (req, res) => {
         return res.status(200).json(apiSuccessWithData("All Users in database", users))
         
     } catch(err) {
-        res.status(500).json(apiError(err))
+        res.status(500).json(apiError(err.message))
     }
     
 }
@@ -31,7 +31,7 @@ const updateUser = async (req, res) => {
         const user = await User.findByIdAndUpdate(req.params.id, req.body)
         res.status(200).json(apiSuccess("Acount has been updated!"));
     } catch(err) {
-        res.status(500).json(apiError(err))
+        res.status(500).json(apiError(err.message))
     }
 }
 

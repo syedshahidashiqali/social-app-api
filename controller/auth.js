@@ -31,7 +31,7 @@ const registerUser = async (req, res) => {
         const user = await newUser.save();
         res.status(201).json(apiSuccessWithData("User is Created", user))
     } catch (err) {
-        res.status(500).json(apiError(err))
+        res.status(500).json(apiError(err.message))
     }
 }
 
@@ -60,7 +60,7 @@ const loginUser = async (req, res) => {
         }
 
     } catch (err) {
-        res.status(500).json(apiError(err))
+        res.status(500).json(apiError(err.message))
     }
 }
 

@@ -29,7 +29,7 @@ const updatePost = async (req, res) => {
             res.status(403).json(apiError("You can only update your post"))
         }
     } catch(err) {
-        res.status(500).json(apiError(err));
+        res.status(500).json(apiError(err.message));
     }
 }
 
@@ -45,7 +45,7 @@ const deletePost = async (req, res) => {
             res.status(403).json(apiError("You can only delete your post"));
         }
     } catch(err) {
-        res.status(500).json(apiError(err));
+        res.status(500).json(apiError(err.message));
     }
 
 }
@@ -86,7 +86,7 @@ const likesOfPost = async (req, res) => {
         const likes = await Like.find();
         res.status(200).json(apiSuccessWithData("All likes of all posts", likes));
     }catch(err){
-        res.status(500).json(apiError(err))
+        res.status(500).json(apiError(err.message))
     }
 
 };
@@ -124,7 +124,7 @@ const deleteComment = async (req, res) => {
         const comment = await Comment.findByIdAndDelete(req.body.commentId);
         res.status(200).json(apiSuccess("Comment deleted"));
     } catch(err) {
-        res.status(500).json(apiError(err));
+        res.status(500).json(apiError(err.message));
     }
 }
 
