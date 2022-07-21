@@ -118,6 +118,15 @@ const commentPost = async (req, res) => {
     }
 }
 
+const commentsOfPost = async (req, res) => {
+    try{
+        const comments = await Comment.find();
+        res.status(200).json(apiSuccessWithData("All comments of all posts", comments));
+    }catch(err){
+        res.status(500).json(apiError(err.message))
+    }
+};
+
 // Delete Comment
 const deleteComment = async (req, res) => { 
     try {
@@ -133,7 +142,8 @@ module.exports = {
     updatePost,
     deletePost,
     likePost,
+    likesOfPost,
     commentPost,
+    commentsOfPost,
     deleteComment,
-    likesOfPost
 }

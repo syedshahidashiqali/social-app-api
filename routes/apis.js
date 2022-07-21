@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { registerUser,loginUser } = require("../controller/auth")
-const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost } = require("../controller/post")
+const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controller/post")
 const auth = require("../middleware/auth")
 
 // REGISTER
@@ -26,6 +26,9 @@ router.get("/likes", auth, likesOfPost)
 
 // Comment Post
 router.post("/:id/comment", auth, commentPost)
+
+// Comments of all post
+router.get("/comments", auth, commentsOfPost)
 
 // Comment Post
 router.delete("/:id/comment/delete", auth, deleteComment)
