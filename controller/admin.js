@@ -1,6 +1,6 @@
 
 const User = require("../models/user")
-const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../apiHelpers")
+const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
 
 // delete user by id
 const deleteUser = async (req, res) => {

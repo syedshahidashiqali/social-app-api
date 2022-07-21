@@ -2,7 +2,7 @@ const Post = require("../models/post");
 const User = require("../models/user");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
-const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../apiHelpers")
+const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
 
 // Create post
 const createPost = async (req, res) => {
