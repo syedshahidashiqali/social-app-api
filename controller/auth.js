@@ -7,12 +7,17 @@ const User = require("../models/user")
 
 // Register
 const registerUser = async (req, res) => {
+    // create session
+    const session = await User.startSession();
+    const opts = session;
     try {
         // check if user already exist
         // Validate if user exist in our database
         const oldUser = await User.findOne({email: req.body.email});
-
+        session.startTransaction();
         if (oldUser) {
+            await session.abortTransaction()
+            session.endSession();
             return res.status(409).json(apiError("User Already Exist. Please Login"));
         }
 
@@ -28,9 +33,16 @@ const registerUser = async (req, res) => {
         })
         
         // save user and return response
-        const user = await newUser.save();
+        console.log('block0')
+
+        const user = await newUser.save(opts);
+        
+        await session.commitTransaction();
+        session.endSession();
         res.status(201).json(apiSuccessWithData("User is Created", user))
     } catch (err) {
+        await session.abortTransaction();
+        session.endSession()
         res.status(500).json(apiError(err.message))
     }
 }
