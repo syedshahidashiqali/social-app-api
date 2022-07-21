@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -29,4 +30,9 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model("User", userSchema);
+userSchema.plugin(mongoosePaginate);
+userSchema.index({ "$**": "text" });
+
+const User = mongoose.model("user", userSchema);
+
+module.exports = User;

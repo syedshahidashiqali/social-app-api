@@ -15,7 +15,14 @@ const deleteUser = async (req, res) => {
 // get all users
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find();
+        const users = await User.paginate(
+            {}, 
+            {
+                page: req.query.page,
+                limit: req.query.limit,
+                lean: true,
+            }
+        )
         return res.status(200).json(apiSuccessWithData("All Users in database", users))
         
     } catch(err) {

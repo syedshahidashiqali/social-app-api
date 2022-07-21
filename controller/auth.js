@@ -33,8 +33,6 @@ const registerUser = async (req, res) => {
         })
         
         // save user and return response
-        console.log('block0')
-
         const user = await newUser.save(opts);
         
         await session.commitTransaction();
