@@ -66,7 +66,7 @@ const likePost = async (req, res) => {
             const delLike = await Like.findOneAndDelete({ userId: req.body.userId, postId: req.params.id })
             const likes = await Like.find();
             post.likes = likes.length;
-            return res.status(200).json(apiSuccessWithData("The post has been disliked", post));
+            return res.status(200).json(apiSuccess("The post has been disliked"));
         }
 
         // if(!post.likes.includes(req.body.userId)) {
@@ -93,26 +93,35 @@ const likesOfPost = async (req, res) => {
 
 // Comment post
 const commentPost = async (req, res) => {
-
     try {
-        const post = await Post.findById(req.params.id);
-        const newComment = await Comment.create({ userId: req.body.userId, content: req.body.content });
-        // post.updateOne({ $push: { comments: { userId: req.body.userId, content: req.body.content} } });
-        await post.comments.push(newComment)
+        let post = await Post.findById(req.params.id);
+        const newComment = await Comment.create({ 
+            userId: req.body.userId, 
+            postId: req.params.id, 
+            content: req.body.content 
+        });
+        await newComment.save();
+        const comments = await Comment.find();
+        post.comments = comments.length;
         await post.save();
-        await post.populate("comments")
-
-        return res.status(201).json(apiSuccessWithData("The comment has been posted", post));
+        return res.status(201).json(apiSuccess("The comment has been posted"));
+        
+        // const post = await Post.findById(req.params.id);
+        // const newComment = await Comment.create({ userId: req.body.userId, content: req.body.content });
+        // // post.updateOne({ $push: { comments: { userId: req.body.userId, content: req.body.content} } });
+        // await post.comments.push(newComment)
+        // await post.save();
+        // await post.populate("comments")
+        // return res.status(201).json(apiSuccessWithData("The comment has been posted", post));
     } catch(err) {
-        res.status(500).json(apiError(err));
+        res.status(500).json(apiError(err.message));
     }
 }
 
 // Delete Comment
 const deleteComment = async (req, res) => { 
     try {
-        const comment = await Comment.findById(req.body.commentId);
-        await comment.deleteOne();
+        const comment = await Comment.findByIdAndDelete(req.body.commentId);
         res.status(200).json(apiSuccess("Comment deleted"));
     } catch(err) {
         res.status(500).json(apiError(err));

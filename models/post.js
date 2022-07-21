@@ -14,12 +14,11 @@ const postSchema = new mongoose.Schema({
     },
     likes: {
         type: Number,
-        ref: "Like",
         default: 0
     },
     comments: {
-        type: [mongoose.SchemaTypes.ObjectId],
-        ref: "Comment"
+        type: Number,
+        default: 0
     }
 },{ 
     timestamps: true 
