@@ -8,7 +8,7 @@ const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = requir
 const createPost = async (req, res) => {
     try {
         let { image, ...others } = req.body;
-        image = req.files && req.files.file && req.files.file[0] && req.files.file[0].path;
+        image = req.files && req.files.file && req.files.file[0] && req.files.file[0].filename;
         const newPost = await new Post({...others, image});
         const savedPost = await newPost.save();
         res.status(200).json(apiSuccessWithData("The post has been saved", savedPost));

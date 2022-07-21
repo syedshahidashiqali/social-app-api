@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
         }
 
         if(user && validPassword) {
-            const token = jwt.sign(user.email, process.env.TOKEN_KEY, { expiresIn: '1h' })
+            const token = jwt.sign({ email: user.email }, process.env.TOKEN_KEY, { expiresIn: '1h' })
 
             user.token = token;
 
