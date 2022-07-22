@@ -11,6 +11,7 @@ const { connectDB } = require("./config/db");
 const usersRoute = require("./routes/apis")
 const adminRoute = require("./routes/admin-apis")
 const postRoute = require("./routes/apis")
+const orderRoute = require("./routes/order")
 
 dotenv.config()
 
@@ -47,6 +48,7 @@ app.use("/api/v1/users", usersRoute);
 app.use("/api/v1/users", adminRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/images", express.static(path.join(__dirname, "public/images")));
+app.use("/api/v1/orders", orderRoute)
 
 const PORT = process.env.PORT || 5000;
 
