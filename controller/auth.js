@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
+const { generateEmail } = require("../config/email")
 
 // user schema is
 const User = require("../models/user")
@@ -34,9 +35,11 @@ const registerUser = async (req, res) => {
         
         // save user and return response
         const user = await newUser.save(opts);
-        
+
         await session.commitTransaction();
-        session.endSession();
+        session.endSession();        
+        const info = await generateEmail(req.body.email, `New User is created successfully`, `<h1>Welcome ${req.body.username}</h1> <h2>New user with username: ${req.body.username} and password: ${req.body.email} is created</h2>`)
+        console.log(info)
         res.status(201).json(apiSuccessWithData("User is Created", user))
     } catch (err) {
         await session.abortTransaction();
