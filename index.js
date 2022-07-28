@@ -48,7 +48,7 @@ app.use(morgan('dev'))
 
 // Routes
 app.use("/api/v1/users", usersRoute);
-app.use("/api/v1/users", adminRoute);
+app.use("/api/v1/admin", adminRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/api/v1/orders", orderRoute)
