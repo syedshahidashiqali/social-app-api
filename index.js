@@ -44,7 +44,7 @@ app.use(
       }
     ])
 );
-app.use(morgan('combined'))
+app.use(morgan('dev'))
 
 // Routes
 app.use("/api/v1/users", usersRoute);

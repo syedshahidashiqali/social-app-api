@@ -29,7 +29,6 @@ const verifyTokenAndAdmin = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, config.TOKEN_KEY);
     if(decoded.role === "admin"){
-      console.log("Innnn If Block")
       return req.user = decoded;
     }
     res.status(401).send("You are not an admin");
