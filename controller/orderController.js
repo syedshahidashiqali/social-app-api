@@ -22,8 +22,10 @@ const placeOrder = async (req, res) => {
 const getOrder = async (req, res) => {
     try {
         const order = await ProductOrder.findById(req.params.orderId);
+        // populate user & product data agains its ids
+        await order.populate("userId")
+        await order.populate("products.productId")
 
-        await order.populate("products.product")
         res.status(200).json(apiSuccessWithData("Order Details", order))
     } catch(err) {
         res.status(500).json(apiError(err.message))

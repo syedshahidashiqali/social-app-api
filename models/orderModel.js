@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const productOrderSchema = mongoose.Schema({
     userId: {
-        type: String,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "user",
         required: true,
     },
     address: {
@@ -12,7 +13,7 @@ const productOrderSchema = mongoose.Schema({
     },
     products:[
         {
-            product: {
+            productId: {
                 type: mongoose.SchemaTypes.ObjectId,
                 ref: "Product",
                 required: true
