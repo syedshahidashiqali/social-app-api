@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { registerUser,loginUser } = require("../controller/auth")
 const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controller/post")
-const auth = require("../middleware/auth")
+const { verifyToken: auth } = require("../middleware/auth")
 
 // REGISTER
 router.post("/register", registerUser)

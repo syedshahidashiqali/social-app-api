@@ -30,7 +30,7 @@ const registerUser = async (req, res) => {
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
-            isAdmin: req.body.isAdmin,
+            role: req.body.role,
         })
         
         // save user and return response
@@ -65,9 +65,10 @@ const loginUser = async (req, res) => {
         }
 
         if(user && validPassword) {
-            const token = jwt.sign({ email: user.email }, process.env.TOKEN_KEY, { expiresIn: '1h' })
+            const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.TOKEN_KEY, { expiresIn: '1h' })
 
             user.token = token;
+            await user.save()
 
             return res.status(200).json(apiSuccessWithData("User token has been generated", token))
         }
