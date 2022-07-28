@@ -18,6 +18,18 @@ const placeOrder = async (req, res) => {
     }
 }
 
+// get an order
+const getOrder = async (req, res) => {
+    try {
+        const order = await ProductOrder.findById(req.params.orderId);
+
+        await order.populate("products.product")
+        res.status(200).json(apiSuccessWithData("Order Details", order))
+    } catch(err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
 // all orders of all users
 const allOrders = async (req, res) => {
     try {
@@ -95,6 +107,7 @@ const aggregationiTotalNumberOfProductsPurchasedMonthly = async (req, res) => {
 module.exports = {
     placeOrder,
     allOrders,
+    getOrder,
     userAllOrders,
     aggregationiTotalNumberOfOrdersMonthly,
     aggregationiTotalNumberOfProductsPurchasedMonthly
