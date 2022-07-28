@@ -1,6 +1,7 @@
 const ProductOrder = require("../models/orderModel")
 const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
 
+// place an order
 const placeOrder = async (req, res) => {
     try {
         const newOrder = await ProductOrder.create({
@@ -17,6 +18,7 @@ const placeOrder = async (req, res) => {
     }
 }
 
+// all orders of all users
 const allOrders = async (req, res) => {
     try {
         const orders = await ProductOrder.find()
@@ -27,6 +29,7 @@ const allOrders = async (req, res) => {
 
 }
 
+// all orders of specific user
 const userAllOrders = async (req, res) => {
     try {
         const orders = await ProductOrder.find({ userId: req.params.userId })
@@ -36,7 +39,9 @@ const userAllOrders = async (req, res) => {
     }
 }
 
-// AGGREGATION PIPELINE
+// <<  AGGREGATION PIPELINE  >>
+
+// Total number of monthly orders
 const aggregationiTotalNumberOfOrdersMonthly = async (req, res) => {
 
     try {
@@ -56,6 +61,7 @@ const aggregationiTotalNumberOfOrdersMonthly = async (req, res) => {
     }
 }
 
+// Total number of products purchased in the month
 const aggregationiTotalNumberOfProductsPurchasedMonthly = async (req, res) => {
 
     try {
