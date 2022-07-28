@@ -27,6 +27,15 @@ const allOrders = async (req, res) => {
 
 }
 
+const userAllOrders = async (req, res) => {
+    try {
+        const orders = await ProductOrder.find({ userId: req.params.userId })
+        res.status(200).json(apiSuccessWithData(`All orders for the user: ${ req.params.userId }`, orders))
+    } catch(err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
 // AGGREGATION PIPELINE
 const aggregationiTotalNumberOfOrdersMonthly = async (req, res) => {
 
@@ -80,6 +89,7 @@ const aggregationiTotalNumberOfProductsPurchasedMonthly = async (req, res) => {
 module.exports = {
     placeOrder,
     allOrders,
+    userAllOrders,
     aggregationiTotalNumberOfOrdersMonthly,
     aggregationiTotalNumberOfProductsPurchasedMonthly
 }
