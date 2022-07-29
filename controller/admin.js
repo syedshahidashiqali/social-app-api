@@ -15,12 +15,15 @@ const deleteUser = async (req, res) => {
 // get all users
 const getAllUsers = async (req, res) => {
     try {
+        const customLabels = { docs: "docs" }
+
         const users = await User.paginate(
             {}, 
             {
                 page: req.query.page,
                 limit: req.query.limit,
                 lean: true,
+                customLabels: customLabels
             }
         )
         return res.status(200).json(apiSuccessWithData("All Users in database", users))
