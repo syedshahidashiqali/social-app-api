@@ -8,11 +8,11 @@ const multer = require("multer")
 const { connectDB } = require("./config/db");
 
 // import routes
-const usersRoute = require("./routes/apis")
-const adminRoute = require("./routes/admin-apis")
-const postRoute = require("./routes/apis")
-const productRoute = require("./routes/productRoute");
-const orderRoute = require("./routes/orderRoute");
+const authRoutes = require("./routes/authRoutes")
+const adminRoutes = require("./routes/adminRoutes")
+const postRoutes = require("./routes/postRoutes")
+const productRoutes = require("./routes/productRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 const morgan = require('morgan')
 
 dotenv.config()
@@ -47,12 +47,12 @@ app.use(
 app.use(morgan('dev'))
 
 // Routes
-app.use("/api/v1/users", usersRoute);
-app.use("/api/v1/admin", adminRoute);
-app.use("/api/v1/posts", postRoute);
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/admin/users", adminRoutes);
+app.use("/api/v1/posts", postRoutes);
 app.use("/images", express.static(path.join(__dirname, "public/images")));
-app.use("/api/v1/orders", orderRoute)
-app.use("/api/v1/products", productRoute)
+app.use("/api/v1/orders", orderRoutes)
+app.use("/api/v1/products", productRoutes)
 
 const PORT = process.env.PORT || 5000;
 

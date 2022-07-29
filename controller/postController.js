@@ -1,5 +1,5 @@
-const Post = require("../models/post");
-const User = require("../models/user");
+const Post = require("../models/postModel");
+const User = require("../models/userModel");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
 const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
