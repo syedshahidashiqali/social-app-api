@@ -1,8 +1,9 @@
 const router = require("express").Router();
 const { addProduct, getAllProducts } = require("../controller/productController");
-const { productValMid } = require("../middleware/validationMiddleware");
+const { validationMiddleWare } = require("../middleware/validationMiddleware");
+const { createProductValRule } = require("../utils/validateRules")
 
-router.get("/", productValMid, getAllProducts)
+router.get("/", validationMiddleWare(createProductValRule), getAllProducts)
 router.post("/add", addProduct)
 
 module.exports = router;
