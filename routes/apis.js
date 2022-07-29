@@ -2,17 +2,13 @@ const router = require("express").Router();
 const { registerUser,loginUser } = require("../controller/auth")
 const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controller/post")
 const { verifyToken: auth } = require("../middleware/auth")
-const { signup } = require("../middleware/validationMiddleware")
+const { signup, signin } = require("../middleware/validationMiddleware")
 
 // REGISTER
-router.post(
-    "/register",
-    signup,
-    registerUser
-)
+router.post("/register", signup, registerUser)
 
 // LOGIN 
-router.post("/login", loginUser)
+router.post("/login", signin, loginUser)
 
 // Create Post
 router.post("/createPost", auth, createPost)
