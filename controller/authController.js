@@ -38,9 +38,9 @@ const registerUser = async (req, res) => {
 
         await session.commitTransaction();
         session.endSession();        
+        res.status(201).json(apiSuccessWithData("User is Created", user))
         const info = await generateEmail(req.body.email, `New User is created successfully`, `<h1>Welcome ${req.body.username}</h1> <h2>New user with username: ${req.body.username} and password: ${req.body.email} is created</h2>`)
         console.log(info)
-        res.status(201).json(apiSuccessWithData("User is Created", user))
     } catch (err) {
         await session.abortTransaction();
         session.endSession()
