@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose")
 const Review = require("../models/review")
 const { apiError, apiSuccess, apiSuccessWithData } = require("../utils/apiHelpers")
 
@@ -41,8 +42,7 @@ const getAllReviewsOfProduct = async (req, res) => {
 
 // << AGGREGATION >>
 
-const calculateAvgRating = async(req, res) => {
-
+const calculateAvgRatingOfAllProducts = async(req, res) => {
     try {
         const pipeline = [
             {
@@ -54,7 +54,34 @@ const calculateAvgRating = async(req, res) => {
         ]
 
         const result = await Review.aggregate(pipeline)
-        res.status(200).json(apiSuccessWithData("The average rating of a product", result))
+        res.status(200).json(apiSuccessWithData("The average rating of all products", result))
+
+    } catch(err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
+const calculateAvgRatingOfSingleProduct = async(req, res) => {
+
+    try {
+        const id = req.params.productId
+
+        const pipeline = [
+            {
+                $match: {
+                    productId: mongoose.Types.ObjectId(id)
+                }
+            },
+            {
+                $group: {
+                    _id: "$productId",
+                    averageRatingOfProducts: { "$avg": "$rating" }
+                }
+            }
+        ]
+
+        const result = await Review.aggregate(pipeline)
+        res.status(200).json(apiSuccessWithData("The average rating of a single product", result))
 
     } catch(err) {
         res.status(500).json(apiError(err.message))
@@ -66,7 +93,8 @@ module.exports = {
     addReview,
     getAllReviews,
     getAllReviewsOfProduct,
-    calculateAvgRating,
+    calculateAvgRatingOfAllProducts,
+    calculateAvgRatingOfSingleProduct,
 }
 
 /* 
