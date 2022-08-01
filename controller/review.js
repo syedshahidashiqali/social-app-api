@@ -32,7 +32,7 @@ const getAllReviews = async (req, res) => {
 
 const getAllReviewsOfProduct = async (req, res) => {
     try {
-        const reviews = await Review.find({ product: req.params.productId })
+        const reviews = await Review.find({ productId: req.params.productId })
         res.status(200).json(apiSuccessWithData("Reviews of a single product", reviews))
 
     } catch (err) {
