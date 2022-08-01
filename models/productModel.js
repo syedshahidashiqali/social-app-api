@@ -14,10 +14,6 @@ const productSchema = mongoose.Schema({
     price: {
         type: Number,
         required: true
-    },
-    avgRating: {
-        type: Number,
-        default: 0,
     }
 }, {
     timestamps: true

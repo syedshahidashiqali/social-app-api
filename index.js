@@ -13,7 +13,7 @@ const adminRoutes = require("./routes/adminRoutes")
 const postRoutes = require("./routes/postRoutes")
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-const reviewsRoutes = require("./routes/reviewsRoutes");
+const reviewsRoutes = require("./routes/review");
 const morgan = require('morgan')
 
 dotenv.config()

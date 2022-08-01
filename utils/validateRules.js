@@ -26,9 +26,10 @@ module.exports = {
         "password": "required|string|min:8",
         "role": "required|string",
     },
+
     createReviewValRule: {
-        "user": "required|string",
-        "product": "required|string",
+        "userId": "required|string",
+        "productId": "required|string",
         "detail": "required|string|max:60",
         "rating": "required|integer|min:1|max:5",
     }

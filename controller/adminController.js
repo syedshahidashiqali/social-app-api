@@ -34,6 +34,15 @@ const getAllUsers = async (req, res) => {
     
 }
 
+const getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
+        res.status(200).json(apiSuccessWithData("User", user))
+    } catch(err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
 // update user
 const updateUser = async (req, res) => {
     try {
@@ -48,5 +57,6 @@ const updateUser = async (req, res) => {
 module.exports = {
     deleteUser,
     getAllUsers,
-    updateUser
+    updateUser,
+    getUser
 }
