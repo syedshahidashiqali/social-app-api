@@ -8,7 +8,6 @@ const addProduct = async (req, res) => {
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
-            avgRating: req.body.avgRating
         })
 
         await newProduct.save()
