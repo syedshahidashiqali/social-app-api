@@ -1,5 +1,5 @@
 const Product = require("../models/productModel")
-const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
+const { apiSuccessWithData, apiSuccess, apiError } = require("../utils/apiHelpers")
 
 // Add Product
 const addProduct = async (req, res) => {
@@ -7,10 +7,11 @@ const addProduct = async (req, res) => {
         const newProduct = await Product.create({
             name: req.body.name,
             description: req.body.description,
-            price: req.body.price
+            price: req.body.price,
+            avgRating: req.body.avgRating
         })
 
-        const product = await newProduct.save()
+        await newProduct.save()
         res.status(201).json(apiSuccess("New Product is Added"))
     } catch (err) {
         res.status(500).json(apiError(err.message))

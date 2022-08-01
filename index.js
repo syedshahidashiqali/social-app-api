@@ -13,6 +13,7 @@ const adminRoutes = require("./routes/adminRoutes")
 const postRoutes = require("./routes/postRoutes")
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const reviewsRoutes = require("./routes/reviewsRoutes");
 const morgan = require('morgan')
 
 dotenv.config()
@@ -53,6 +54,7 @@ app.use("/api/v1/posts", postRoutes);
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/api/v1/orders", orderRoutes)
 app.use("/api/v1/products", productRoutes)
+app.use("/api/v1/reviews", reviewsRoutes)
 
 const PORT = process.env.PORT || 5000;
 
