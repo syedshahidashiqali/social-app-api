@@ -1,5 +1,5 @@
 const Reviews = require("../models/reviewsModel")
-const { apiError, apiSuccess } = require("../utils/apiHelpers")
+const { apiError, apiSuccess, apiSuccessWithData } = require("../utils/apiHelpers")
 const Product = require("../models/productModel")
 
 const addReview = async (req, res) => {
@@ -35,6 +35,28 @@ const addReview = async (req, res) => {
     }
 }
 
+const getAllReviews = async (req, res) => {
+    try {
+        const reviews = await Reviews.find()
+        res.status(200).json(apiSuccessWithData("All Reviews for all products", reviews))
+
+    } catch (err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
+const getAllReviewsOfProduct = async (req, res) => {
+    try {
+        const reviews = await Reviews.find({ product: req.params.productId })
+        res.status(200).json(apiSuccessWithData("Reviews of a single product", reviews))
+
+    } catch (err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
 module.exports = {
-    addReview
+    addReview,
+    getAllReviews,
+    getAllReviewsOfProduct
 }
