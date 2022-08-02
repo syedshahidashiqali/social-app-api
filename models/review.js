@@ -22,6 +22,21 @@ const reviewSchema = Schema({
         max: 5,
         required: true
     }
-}, { timestamps: true });
+}, { timestamps: true,toJSON : { virtuals : true},toObject : { virtuals : true} });
+
+
+reviewSchema.virtual('user',{
+    ref: "user",
+    localField : 'userId',
+    foreignField : '_id',
+    justOne : true,
+})
+
+reviewSchema.virtual('Product',{
+    ref: "Product",
+    localField : 'productId',
+    foreignField : '_id',
+    justOne : true,
+})
 
 module.exports = mongoose.model("Review", reviewSchema)

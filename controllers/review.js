@@ -23,6 +23,13 @@ const addReview = async (req, res) => {
 const getAllReviews = async (req, res) => {
     try {
         const reviews = await Review.find()
+            .populate([
+                { path: "user", select: "-__v -createdAt -updatedAt -password -_id" },
+                { path: "Product", select: "-__v -createdAt -updatedAt -password -_id" }
+            ])
+            .select("-__v -createdAt -updatedAt")
+            .exec();
+
         res.status(200).json(apiSuccessWithData("All Reviews for all products", reviews))
 
     } catch (err) {
