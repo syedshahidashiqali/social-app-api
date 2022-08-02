@@ -31,6 +31,6 @@ module.exports = {
         "userId": "required|string",
         "productId": "required|string",
         "detail": "required|string|max:60",
-        "rating": "required|integer|min:1|max:5",
+        "rating": "required|min:1|max:5",
     }
 }
