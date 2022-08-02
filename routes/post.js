@@ -1,7 +1,12 @@
 const router = require("express").Router();
-const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controllers/post")
+const { getPost, getAllPosts, createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controllers/post")
 const { verifyToken: auth } = require("../middleware/authMiddleware")
 
+// Get post
+router.get("/:id", getPost);
+
+// Get post
+router.get("/", auth, getAllPosts);
 
 // Create Post
 router.post("/createPost", auth, createPost)
@@ -13,10 +18,10 @@ router.post("/updatePost/:id", auth, updatePost)
 router.delete("/deletePost/:id", auth, deletePost)
 
 // Like / Dislike Post
-router.put("/:id/like", auth, likePost)
+router.put("/:id/like", likePost)
 
 // Likes of all posts
-router.get("/likes", auth, likesOfPost)
+router.get("/likes/all", likesOfPost)
 
 // Comment Post
 router.post("/:id/comment", auth, commentPost)

@@ -4,6 +4,25 @@ const Comment = require("../models/comment");
 const Like = require("../models/like");
 const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
 
+// Get post
+const getPost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id)
+        res.status(200).json(apiSuccessWithData("Post Data", post));
+    } catch(err) {
+        res.status(500).json(apiError(err.message));
+    }
+}
+
+const getAllPosts = async (req, res) => {
+    try {
+        const posts = await Post.find().populate("numberOfLikes").exec()
+        res.status(200).json(apiSuccessWithData("All posts in the databse", posts));
+    } catch(err) {
+        res.status(500).json(apiError(err.message));
+    }
+}
+
 // Create post
 const createPost = async (req, res) => {
     try {
@@ -57,15 +76,15 @@ const likePost = async (req, res) => {
         const like = await Like.findOne({ userId: req.body.userId, postId: req.params.id })
         if(!like) {
             const newLike = await Like.create({ userId: req.body.userId, postId: req.params.id });
-            await newLike.save();
-            const likes = await Like.find();
-            post.likes = likes.length;
-            await post.save();
+            // await newLike.save();
+            // const likes = await Like.find();
+            // post.likes = likes.length;
+            // await post.save();
             return res.status(201).json(apiSuccessWithData("The post has been liked", post));
         } else {
             const delLike = await Like.findOneAndDelete({ userId: req.body.userId, postId: req.params.id })
-            const likes = await Like.find();
-            post.likes = likes.length;
+            // const likes = await Like.find();
+            // post.likes = likes.length;
             return res.status(200).json(apiSuccess("The post has been disliked"));
         }
 
@@ -138,6 +157,8 @@ const deleteComment = async (req, res) => {
 }
 
 module.exports = {
+    getPost,
+    getAllPosts,
     createPost,
     updatePost,
     deletePost,

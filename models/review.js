@@ -22,7 +22,11 @@ const reviewSchema = Schema({
         max: 5,
         required: true
     }
-}, { timestamps: true,toJSON : { virtuals : true},toObject : { virtuals : true} });
+}, { 
+    timestamps: true,
+    toJSON : { virtuals : true },
+    toObject : { virtuals : true } 
+});
 
 
 reviewSchema.virtual('user',{
@@ -32,7 +36,7 @@ reviewSchema.virtual('user',{
     justOne : true,
 })
 
-reviewSchema.virtual('Product',{
+reviewSchema.virtual('product',{
     ref: "Product",
     localField : 'productId',
     foreignField : '_id',
