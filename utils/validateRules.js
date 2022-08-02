@@ -24,7 +24,7 @@ module.exports = {
         "username": "required|string",
         "email": "required|string|email",
         "password": "required|string|min:8",
-        "role": "required|string",
+        "role": "string",
     },
 
     createReviewValRule: {
