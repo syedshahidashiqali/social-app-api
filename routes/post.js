@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controller/postController")
+const { createPost, updatePost, deletePost, likePost, commentPost, deleteComment, likesOfPost, commentsOfPost  } = require("../controllers/post")
 const { verifyToken: auth } = require("../middleware/authMiddleware")
 
 

@@ -1,6 +1,6 @@
 const router = require("express").Router()
 
-const { addReview, getAllReviews, getAllReviewsOfProduct, calculateAvgRatingOfAllProducts, calculateAvgRatingOfSingleProduct } = require("../controller/review")
+const { addReview, getAllReviews, getAllReviewsOfProduct, calculateAvgRatingOfAllProducts, calculateAvgRatingOfSingleProduct } = require("../controllers/review")
 const { verifyToken: auth } = require("../middleware/authMiddleware")
 const { validationMiddleWare } = require("../middleware/validationMiddleware");
 const { createReviewValRule } = require("../utils/validateRules")

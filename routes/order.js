@@ -1,14 +1,13 @@
-const router = require("express").Router();
+const router = require("express").Router(); 
+const { placeOrder, allOrders, getOrder, userAllOrders, aggregationiTotalNumberOfOrdersMonthly, aggregationiTotalNumberOfProductsPurchasedMonthly } = require("../controllers/order");
+const { validationMiddleWare } = require("../middleware/validationMiddleware");
+const { placeOrderValRule } = require("../utils/validateRules")
 
-const { 
-    addManyOrders,
-    calculateTotalOrderQuantity,
-    calculateTotalOrderValueAndAvgOrderQuantity 
-} = require("../controller/order")
-
-
-router.get("/add", addManyOrders)
-router.get("/totalOrderQuantity", calculateTotalOrderQuantity)
-router.get("/totalOrderValue", calculateTotalOrderValueAndAvgOrderQuantity)
+router.post("/placeOrder", validationMiddleWare(placeOrderValRule), placeOrder)
+router.get("/all", allOrders)
+router.get("/:orderId", getOrder)
+router.get("/all/:userId", userAllOrders)
+router.get("/monthlyOrders/all", aggregationiTotalNumberOfOrdersMonthly)
+router.get("/monthlyPurchases/all", aggregationiTotalNumberOfProductsPurchasedMonthly)
 
 module.exports = router;

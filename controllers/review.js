@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose")
+const mongoose = require("mongoose")
 const Review = require("../models/review")
 const { apiError, apiSuccess, apiSuccessWithData } = require("../utils/apiHelpers")
 

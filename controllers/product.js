@@ -1,4 +1,4 @@
-const Product = require("../models/productModel")
+const Product = require("../models/product")
 const { apiSuccessWithData, apiSuccess, apiError } = require("../utils/apiHelpers")
 
 // Add Product

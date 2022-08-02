@@ -1,10 +1,10 @@
-const ProductOrder = require("../models/orderModel")
+const Order = require("../models/order")
 const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = require("../utils/apiHelpers")
 
 // place an order
 const placeOrder = async (req, res) => {
     try {
-        const newOrder = await ProductOrder.create({
+        const newOrder = await Order.create({
             userId: req.body.userId,
             address: req.body.address,
             products: req.body.products
@@ -21,7 +21,7 @@ const placeOrder = async (req, res) => {
 // get an order
 const getOrder = async (req, res) => {
     try {
-        const order = await ProductOrder.findById(req.params.orderId).populate("userId").populate("products.productId")
+        const order = await Order.findById(req.params.orderId).populate("userId").populate("products.productId")
 
         res.status(200).json(apiSuccessWithData("Order Details", order))
     } catch(err) {
@@ -32,7 +32,7 @@ const getOrder = async (req, res) => {
 // all orders of all users
 const allOrders = async (req, res) => {
     try {
-        const orders = await ProductOrder.find()
+        const orders = await Order.find()
         res.status(200).json(apiSuccessWithData("All Orders", orders))
     } catch(err) {
         res.status(500).json(apiError(err.message))
@@ -43,7 +43,7 @@ const allOrders = async (req, res) => {
 // all orders of specific user
 const userAllOrders = async (req, res) => {
     try {
-        const orders = await ProductOrder.find({ userId: req.params.userId })
+        const orders = await Order.find({ userId: req.params.userId })
         res.status(200).json(apiSuccessWithData(`All orders for the user: ${ req.params.userId }`, orders))
     } catch(err) {
         res.status(500).json(apiError(err.message))
@@ -64,7 +64,7 @@ const aggregationiTotalNumberOfOrdersMonthly = async (req, res) => {
                 }
             }
         ];
-        const result = await ProductOrder.aggregate(pipeline);
+        const result = await Order.aggregate(pipeline);
         res.status(200).json(result)
 
     } catch(err) {
@@ -95,7 +95,7 @@ const aggregationiTotalNumberOfProductsPurchasedMonthly = async (req, res) => {
             }
 
         ];
-        const result = await ProductOrder.aggregate(pipeline);
+        const result = await Order.aggregate(pipeline);
         res.status(200).json(apiSuccessWithData("Total number of Products purchased in the month", result))
 
     } catch(err) {

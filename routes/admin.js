@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { deleteUser, getAllUsers, updateUser, getUser } = require("../controller/adminController")
+const { deleteUser, getAllUsers, updateUser, getUser } = require("../controllers/admin")
 const { verifyTokenAndAdmin: authAdmin } = require("../middleware/authMiddleware")
 
 // Delete route

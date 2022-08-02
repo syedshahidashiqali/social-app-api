@@ -8,11 +8,11 @@ const multer = require("multer")
 const { connectDB } = require("./config/db");
 
 // import routes
-const authRoutes = require("./routes/authRoutes")
-const adminRoutes = require("./routes/adminRoutes")
-const postRoutes = require("./routes/postRoutes")
-const productRoutes = require("./routes/productRoutes");
-const orderRoutes = require("./routes/orderRoutes");
+const authRoutes = require("./routes/auth")
+const adminRoutes = require("./routes/admin")
+const postRoutes = require("./routes/post")
+const productRoutes = require("./routes/product");
+const orderRoutes = require("./routes/order");
 const reviewsRoutes = require("./routes/review");
 const morgan = require('morgan')
 

@@ -4,7 +4,7 @@ const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = requir
 const { generateEmail } = require("../config/email")
 
 // user schema is
-const User = require("../models/userModel")
+const User = require("../models/user")
 
 // Register
 const registerUser = async (req, res) => {

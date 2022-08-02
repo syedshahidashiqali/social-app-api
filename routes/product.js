@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { addProduct, getAllProducts, getProduct } = require("../controller/productController");
+const { addProduct, getAllProducts, getProduct } = require("../controllers/product");
 const { validationMiddleWare } = require("../middleware/validationMiddleware");
 const { createProductValRule } = require("../utils/validateRules")
 
