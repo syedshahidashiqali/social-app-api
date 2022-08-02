@@ -16,7 +16,7 @@ const getPost = async (req, res) => {
 
 const getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.find().populate("numberOfLikes").exec()
+        const posts = await Post.find().populate(["numberOfLikes", "numberOfComments"]).exec()
         res.status(200).json(apiSuccessWithData("All posts in the databse", posts));
     } catch(err) {
         res.status(500).json(apiError(err.message));
@@ -72,28 +72,15 @@ const deletePost = async (req, res) => {
 // Like / Dislike post
 const likePost = async (req, res) => {
     try {
-        let post = await Post.findById(req.params.id);
         const like = await Like.findOne({ userId: req.body.userId, postId: req.params.id })
         if(!like) {
             const newLike = await Like.create({ userId: req.body.userId, postId: req.params.id });
-            // await newLike.save();
-            // const likes = await Like.find();
-            // post.likes = likes.length;
-            // await post.save();
-            return res.status(201).json(apiSuccessWithData("The post has been liked", post));
+            await newLike.save();
+            res.status(201).json(apiSuccess("The post has been liked"));
         } else {
-            const delLike = await Like.findOneAndDelete({ userId: req.body.userId, postId: req.params.id })
-            // const likes = await Like.find();
-            // post.likes = likes.length;
-            return res.status(200).json(apiSuccess("The post has been disliked"));
+            await Like.findOneAndDelete({ userId: req.body.userId, postId: req.params.id })
+            res.status(200).json(apiSuccess("The post has been disliked"));
         }
-
-        // if(!post.likes.includes(req.body.userId)) {
-        //     await post.updateOne({ $push: { likes: req.body.userId } });
-        //     return res.status(200).json(apiSuccess("The post has been liked"))
-        // } 
-        // await post.updateOne({ $pull: { likes: req.body.userId } });
-        // return res.status(200).json(apiSuccess("The post has been disliked"));
     } catch(err) {
         res.status(500).json(apiError(err.message));
     }
@@ -113,25 +100,13 @@ const likesOfPost = async (req, res) => {
 // Comment post
 const commentPost = async (req, res) => {
     try {
-        let post = await Post.findById(req.params.id);
         const newComment = await Comment.create({ 
             userId: req.body.userId, 
             postId: req.params.id, 
             content: req.body.content 
         });
         await newComment.save();
-        const comments = await Comment.find();
-        post.comments = comments.length;
-        await post.save();
-        return res.status(201).json(apiSuccess("The comment has been posted"));
-        
-        // const post = await Post.findById(req.params.id);
-        // const newComment = await Comment.create({ userId: req.body.userId, content: req.body.content });
-        // // post.updateOne({ $push: { comments: { userId: req.body.userId, content: req.body.content} } });
-        // await post.comments.push(newComment)
-        // await post.save();
-        // await post.populate("comments")
-        // return res.status(201).json(apiSuccessWithData("The comment has been posted", post));
+        res.status(201).json(apiSuccess("The comment has been posted"));
     } catch(err) {
         res.status(500).json(apiError(err.message));
     }

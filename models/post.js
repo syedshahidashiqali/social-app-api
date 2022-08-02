@@ -13,10 +13,6 @@ const postSchema = new Schema({
     },
     image: {
         type: String,
-    },
-    comments: {
-        type: Number,
-        default: 0
     }
 },{ 
     timestamps: true,
@@ -26,6 +22,14 @@ const postSchema = new Schema({
 
 postSchema.virtual('numberOfLikes',{
     ref: "Like",
+    localField : '_id',
+    foreignField : 'postId',
+    justOne : true,
+    count: true
+})
+
+postSchema.virtual('numberOfComments',{
+    ref: "Comment",
     localField : '_id',
     foreignField : 'postId',
     justOne : true,
