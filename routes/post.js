@@ -27,7 +27,7 @@ router.get("/likes/all", likesOfPost)
 router.post("/:id/comment", auth, commentPost)
 
 // Comments of all post
-router.get("/comments", auth, commentsOfPost)
+router.get("/comments/all", auth, commentsOfPost)
 
 // Comment Post
 router.delete("/:id/comment/delete", auth, deleteComment)

@@ -7,7 +7,7 @@ const { apiSuccessWithData, apiSuccess, apiError, apiValidationErrors } = requir
 // Get post
 const getPost = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id)
+        const post = await Post.findById(req.params.id).populate(["numberOfLikes", "numberOfComments"])
         res.status(200).json(apiSuccessWithData("Post Data", post));
     } catch(err) {
         res.status(500).json(apiError(err.message));
