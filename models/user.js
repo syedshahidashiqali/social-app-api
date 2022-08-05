@@ -27,6 +27,10 @@ const userSchema = new Schema({
     token: {
         type: String,
         default: ""
+    },
+    otp: {
+        type: String,
+        default: ""
     }
 }, {
     timestamps: true

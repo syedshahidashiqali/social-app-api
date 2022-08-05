@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
+const cors = require("cors");
 
 const { fileFilter, fileStorage } = require("./config/multerConfig1")
 const multer = require("multer")
@@ -15,7 +16,6 @@ const productRoutes = require("./routes/product");
 const orderRoutes = require("./routes/order");
 const reviewsRoutes = require("./routes/review");
 const morgan = require('morgan')
-
 dotenv.config()
 
 const app = express();
@@ -23,33 +23,34 @@ const app = express();
 // Middlewares
 app.use(express.json());
 app.use(
-    multer({
-      storage: fileStorage,
-      fileFilter: fileFilter
-    }).fields([
-      {
-        name: "file",
-        maxCount: 1
-      },
-      {
-        name: "ad_video",
-        maxCount: 1
-      },
-      {
-        name: "reciepts",
-        maxCount: 12
-      },
-      {
-        name: "doc_schedule",
-        maxCount: 1
-      }
-    ])
+  multer({
+    storage: fileStorage,
+    fileFilter: fileFilter
+  }).fields([
+    {
+      name: "file",
+      maxCount: 1
+    },
+    {
+      name: "ad_video",
+      maxCount: 1
+    },
+    {
+      name: "reciepts",
+      maxCount: 12
+    },
+    {
+      name: "doc_schedule",
+      maxCount: 1
+    }
+  ])
 );
 app.use(morgan('dev'))
+app.use(cors())
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/admin/users", adminRoutes);
+app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/posts", postRoutes);
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/api/v1/orders", orderRoutes)

@@ -14,7 +14,7 @@ const registerUser = async (req, res) => {
     try {
         // check if user already exist
         // Validate if user exist in our database
-        const oldUser = await User.findOne({email: req.body.email});
+        const oldUser = await User.findOne({ email: req.body.email });
         session.startTransaction();
         if (oldUser) {
             await session.abortTransaction()
@@ -25,19 +25,19 @@ const registerUser = async (req, res) => {
         // create new user
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(req.body.password, salt)
-        
+
         const newUser = await User.create({
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
             role: req.body.role,
         })
-        
+
         // save user and return response
         const user = await newUser.save(opts);
 
         await session.commitTransaction();
-        session.endSession();        
+        session.endSession();
         res.status(201).json(apiSuccessWithData("User is Created", user))
         const info = await generateEmail(req.body.email, `New User is created successfully`, `<h1>Welcome ${req.body.username}</h1> <h2>New user with username: ${req.body.username} and password: ${req.body.email} is created</h2>`)
         console.log(info)
@@ -54,25 +54,24 @@ const loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
-        if(!user) {
+        if (!user) {
             return res.status(400).json(apiError("User is not registered"))
         }
 
         const validPassword = await bcrypt.compare(password, user.password);
 
-        if(!validPassword){
+        if (!validPassword) {
             return res.status(400).json(apiError("wrong password!"))
         }
 
-        if(user && validPassword) {
-            const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.TOKEN_KEY, { expiresIn: '1h' })
-
+        if (user && validPassword) {
+            const token = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.TOKEN_KEY)
             user.token = token;
             await user.save()
 
-            return res.status(200).json(apiSuccessWithData("User token has been generated", token))
+            res.status(200).json(apiSuccessWithData("User token has been generated", token))
+            generateEmail(email, `User is logged in.`, `<h1>Welcome ${req.body.email}</h1>`)
         }
-
     } catch (err) {
         res.status(500).json(apiError(err.message))
     }
