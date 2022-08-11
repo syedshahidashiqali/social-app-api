@@ -8,9 +8,10 @@ const placeOrder = async (req, res) => {
             userId: req.body.userId,
             address: req.body.address,
             products: req.body.products
-        })
+        });
 
-        const order = await newOrder.save()
+        const order = await newOrder.save();
+
 
         res.status(201).json(apiSuccessWithData("Order is placed successfully", order))
     } catch (err) {
@@ -21,10 +22,9 @@ const placeOrder = async (req, res) => {
 // get an order
 const getOrder = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.orderId).populate("userId").populate("products.productId")
-
+        const order = await Order.findById(req.params.orderId).populate([{ path: "userId" }, { path: "products.productId" }]);
         res.status(200).json(apiSuccessWithData("Order Details", order))
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 }
@@ -34,7 +34,7 @@ const allOrders = async (req, res) => {
     try {
         const orders = await Order.find()
         res.status(200).json(apiSuccessWithData("All Orders", orders))
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 
@@ -44,8 +44,8 @@ const allOrders = async (req, res) => {
 const userAllOrders = async (req, res) => {
     try {
         const orders = await Order.find({ userId: req.params.userId })
-        res.status(200).json(apiSuccessWithData(`All orders for the user: ${ req.params.userId }`, orders))
-    } catch(err) {
+        res.status(200).json(apiSuccessWithData(`All orders for the user: ${req.params.userId}`, orders))
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 }
@@ -67,7 +67,7 @@ const aggregationiTotalNumberOfOrdersMonthly = async (req, res) => {
         const result = await Order.aggregate(pipeline);
         res.status(200).json(result)
 
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 }
@@ -98,7 +98,7 @@ const aggregationiTotalNumberOfProductsPurchasedMonthly = async (req, res) => {
         const result = await Order.aggregate(pipeline);
         res.status(200).json(apiSuccessWithData("Total number of Products purchased in the month", result))
 
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 }

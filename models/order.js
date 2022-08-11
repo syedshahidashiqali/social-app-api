@@ -12,7 +12,7 @@ const orderSchema = new Schema({
         required: true,
         maxlength: 200
     },
-    products:[
+    products: [
         {
             productId: {
                 type: Schema.Types.ObjectId,
@@ -22,11 +22,16 @@ const orderSchema = new Schema({
             quantity: {
                 type: Number,
                 required: true,
+            },
+            price: {
+                type: Number,
+                required: true
             }
         }
     ],
 }, {
-    timestamps: true
+    timestamps: true,
+
 });
 
 module.exports = mongoose.model("Order", orderSchema);

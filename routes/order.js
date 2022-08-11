@@ -1,4 +1,4 @@
-const router = require("express").Router(); 
+const router = require("express").Router();
 const { placeOrder, allOrders, getOrder, userAllOrders, aggregationiTotalNumberOfOrdersMonthly, aggregationiTotalNumberOfProductsPurchasedMonthly } = require("../controllers/order");
 const { validationMiddleWare } = require("../middleware/validationMiddleware");
 const { placeOrderValRule } = require("../utils/validateRules")

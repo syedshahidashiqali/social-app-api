@@ -10,11 +10,11 @@ const userSchema = new Schema({
         unique: true
     },
     email: {
-        type:String,
+        type: String,
         required: true,
         maxlength: 50,
         unique: true
-    }, 
+    },
     password: {
         type: String,
         required: true,
@@ -25,10 +25,6 @@ const userSchema = new Schema({
         default: "basic"
     },
     token: {
-        type: String,
-        default: ""
-    },
-    otp: {
         type: String,
         default: ""
     }

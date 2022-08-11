@@ -39,7 +39,7 @@ const getAllReviews = async (req, res) => {
 
 const getAllReviewsOfProduct = async (req, res) => {
     try {
-        const reviews = await Review.find({ productId: req.params.productId })
+        const reviews = await Review.find({ productId: req.params.productId }).populate(["user"])
         res.status(200).json(apiSuccessWithData("Reviews of a single product", reviews))
 
     } catch (err) {
@@ -49,7 +49,7 @@ const getAllReviewsOfProduct = async (req, res) => {
 
 // << AGGREGATION >>
 
-const calculateAvgRatingOfAllProducts = async(req, res) => {
+const calculateAvgRatingOfAllProducts = async (req, res) => {
     try {
         const pipeline = [
             {
@@ -63,12 +63,12 @@ const calculateAvgRatingOfAllProducts = async(req, res) => {
         const result = await Review.aggregate(pipeline)
         res.status(200).json(apiSuccessWithData("The average rating of all products", result))
 
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 }
 
-const calculateAvgRatingOfSingleProduct = async(req, res) => {
+const calculateAvgRatingOfSingleProduct = async (req, res) => {
 
     try {
         const id = req.params.productId
@@ -90,7 +90,7 @@ const calculateAvgRatingOfSingleProduct = async(req, res) => {
         const result = await Review.aggregate(pipeline)
         res.status(200).json(apiSuccessWithData("The average rating of a single product", result))
 
-    } catch(err) {
+    } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 }
