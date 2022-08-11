@@ -103,13 +103,44 @@ const aggregationiTotalNumberOfProductsPurchasedMonthly = async (req, res) => {
     }
 }
 
+const aggregationTotalPurchases = async (req, res) => {
+
+    try {
+        const pipeline = [
+            {
+                $unwind: "$products"
+            },
+            {
+                $project: {
+                    products: 1,
+                    _id: 0,
+                    // createdAt: 1
+                }
+            },
+            {
+                $group: {
+                    // _id: { month: { "$month": "$createdAt" } },
+                    _id: "",
+                    totalSales: { "$sum": { "$multiply": ["$products.quantity", "$products.price"] } }
+                }
+            }
+
+        ];
+        const result = await Order.aggregate(pipeline);
+        res.status(200).json(apiSuccessWithData("Total number of Products purchased in the month", result))
+
+    } catch (err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
 module.exports = {
     placeOrder,
     allOrders,
     getOrder,
     userAllOrders,
     aggregationiTotalNumberOfOrdersMonthly,
-    aggregationiTotalNumberOfProductsPurchasedMonthly
+    aggregationiTotalNumberOfProductsPurchasedMonthly,
+    aggregationTotalPurchases
 }
 
 // total number of products purchased in the month
