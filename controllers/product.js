@@ -36,7 +36,21 @@ const updateProduct = async (req, res) => {
 // Get all Products
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find()
+        let query = {}
+        if (req.query.name) {
+            query.name = req.query.name
+        }
+        const products = await Product.find(query)
+        res.status(200).json(apiSuccessWithData("All products available", products))
+    } catch (err) {
+        res.status(500).json(apiError(err.message))
+    }
+}
+
+// Get all Products
+const getAllProductsCount = async (req, res) => {
+    try {
+        const products = await Product.find().count()
         res.status(200).json(apiSuccessWithData("All products available", products))
     } catch (err) {
         res.status(500).json(apiError(err.message))
@@ -57,5 +71,6 @@ module.exports = {
     addProduct,
     getAllProducts,
     getProduct,
-    updateProduct
+    updateProduct,
+    getAllProductsCount
 }

@@ -1,6 +1,14 @@
 const router = require("express").Router()
 
-const { addReview, getAllReviews, getAllReviewsOfProduct, calculateAvgRatingOfAllProducts, calculateAvgRatingOfSingleProduct } = require("../controllers/review")
+const {
+  addReview,
+  getAllReviews,
+  getAllReviewsOfProduct,
+  calculateAvgRatingOfAllProducts,
+  calculateAvgRatingOfSingleProduct,
+  calculateRatingsOfSingleProduct,
+  calculateRatingCountOfSingleProduct
+} = require("../controllers/review")
 const { verifyToken: auth } = require("../middleware/authMiddleware")
 const { validationMiddleWare } = require("../middleware/validationMiddleware");
 const { createReviewValRule } = require("../utils/validateRules")
@@ -12,5 +20,7 @@ router.get("/product/:productId", auth, getAllReviewsOfProduct)
 // << AGGREGATION Routes>>
 router.get("/averageRating/all", auth, calculateAvgRatingOfAllProducts)
 router.get("/averageRating/single/:productId", auth, calculateAvgRatingOfSingleProduct)
+router.get("/allRatings/single/:productId", calculateRatingsOfSingleProduct)
+router.get("/allRatings/single/:productId/:count", calculateRatingCountOfSingleProduct)
 
 module.exports = router;

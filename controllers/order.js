@@ -40,6 +40,17 @@ const allOrders = async (req, res) => {
 
 }
 
+// all orders count of all users
+const allOrdersCount = async (req, res) => {
+    try {
+        const orders = await Order.find().count()
+        res.status(200).json(apiSuccessWithData("All Orders Count", orders))
+    } catch (err) {
+        res.status(500).json(apiError(err.message))
+    }
+
+}
+
 // all orders of specific user
 const userAllOrders = async (req, res) => {
     try {
@@ -140,7 +151,8 @@ module.exports = {
     userAllOrders,
     aggregationiTotalNumberOfOrdersMonthly,
     aggregationiTotalNumberOfProductsPurchasedMonthly,
-    aggregationTotalPurchases
+    aggregationTotalPurchases,
+    allOrdersCount
 }
 
 // total number of products purchased in the month

@@ -1,5 +1,14 @@
 const router = require("express").Router();
-const { placeOrder, allOrders, getOrder, userAllOrders, aggregationiTotalNumberOfOrdersMonthly, aggregationiTotalNumberOfProductsPurchasedMonthly, aggregationTotalPurchases } = require("../controllers/order");
+const {
+  placeOrder,
+  allOrders,
+  getOrder,
+  userAllOrders,
+  aggregationiTotalNumberOfOrdersMonthly,
+  aggregationiTotalNumberOfProductsPurchasedMonthly,
+  aggregationTotalPurchases,
+  allOrdersCount
+} = require("../controllers/order");
 const { validationMiddleWare } = require("../middleware/validationMiddleware");
 const { placeOrderValRule } = require("../utils/validateRules")
 
@@ -10,5 +19,6 @@ router.get("/all/:userId", userAllOrders)
 router.get("/monthlyOrders/all", aggregationiTotalNumberOfOrdersMonthly)
 router.get("/monthlyPurchases/all", aggregationiTotalNumberOfProductsPurchasedMonthly)
 router.get("/purchases/all", aggregationTotalPurchases)
+router.get("/count/all", allOrdersCount)
 
 module.exports = router;

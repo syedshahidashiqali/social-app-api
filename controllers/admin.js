@@ -48,23 +48,42 @@ const deleteUser = async (req, res) => {
 // get all users
 const getAllUsers = async (req, res) => {
     try {
-        const customLabels = { docs: "docs" }
+        const customLabels = { docs: "data", totalPages: 'total' }
+        let query = {}
+        let options = { lean: true, customLabels: customLabels }
+
+        if (req.query.username) {
+            query.username = req.query.username
+        }
+
+        if (req.query.page) {
+            options.page = req.query.page
+        }
+
+        if (req.query.limit) {
+            options.limit = req.query.limit
+        }
 
         const users = await User.paginate(
-            {},
-            {
-                page: req.query.page,
-                limit: req.query.limit,
-                lean: true,
-                customLabels: customLabels
-            }
+            query,
+            options
         )
+
         return res.status(200).json(apiSuccessWithData("All Users in database", users))
 
     } catch (err) {
         res.status(500).json(apiError(err.message))
     }
 
+}
+
+const getAllUsersCount = async (req, res) => {
+    try {
+        const users = await User.find().count()
+        res.status(200).json(apiSuccessWithData("Users count", users))
+    } catch (err) {
+        res.status(500).json(apiError(err.message))
+    }
 }
 
 const getUser = async (req, res) => {
@@ -92,5 +111,6 @@ module.exports = {
     deleteUser,
     getAllUsers,
     updateUser,
-    getUser
+    getUser,
+    getAllUsersCount
 }
