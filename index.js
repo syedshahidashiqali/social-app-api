@@ -15,7 +15,9 @@ const postRoutes = require("./routes/post")
 const productRoutes = require("./routes/product");
 const orderRoutes = require("./routes/order");
 const reviewsRoutes = require("./routes/review");
-const morgan = require('morgan')
+const googleRoutes = require("./routes/google");
+const morgan = require('morgan');
+const User = require("./models/user");
 dotenv.config()
 
 const app = express();
@@ -47,6 +49,12 @@ app.use(
 );
 app.use(morgan('dev'))
 app.use(cors())
+// app.use(async (req, res, next) => {
+//   const user = await User.findOne({ id: req.session.userId })
+//   // const user = await User.findFirst({where: { id:  req.session.userId }})
+//   req.user = user
+//   next()
+// })
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
@@ -56,6 +64,7 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.use("/api/v1/orders", orderRoutes)
 app.use("/api/v1/products", productRoutes)
 app.use("/api/v1/reviews", reviewsRoutes)
+app.use("/api/v1", googleRoutes)
 
 const PORT = process.env.PORT || 5000;
 
