@@ -83,7 +83,7 @@ const loginWithGoogle = async (req, res) => {
         const { token } = req.body;
         const { payload } = await client.verifyIdToken({
             idToken: token,
-            audience: "74131798307-mil5equd3kte3s5vu61i8c10grl8eg44.apps.googleusercontent.com"
+            audience: process.env.CLIENT_ID
         })
         console.log("payload is:", payload)
         const { email_verified, name, email, } = payload
@@ -94,15 +94,18 @@ const loginWithGoogle = async (req, res) => {
                 const jwtToken = jwt.sign({ id: user._id, email: user.email, role: user.role }, process.env.TOKEN_KEY)
                 user.token = jwtToken;
                 await user.save()
-                res.status(200).json(apiSuccessWithData("User token", { token: jwtToken }))
+                return res.status(200).json(apiSuccessWithData("User token", { token: jwtToken }))
             }
-            const salt = await bcrypt.genSalt(10)
-            const hashedPassword = await bcrypt.hash("12345678", salt)
-            const newUser = await User.create({ username: name, email: email, password: hashedPassword, role: "admin" })
-            const jwtToken = jwt.sign({ id: newUser._id, email: newUser.email, role: newUser.role }, process.env.TOKEN_KEY)
-            newUser.token = jwtToken;
-            await newUser.save()
-            res.status(200).json(apiSuccessWithData("User token", { token: jwtToken }))
+            else {
+                const salt = await bcrypt.genSalt(10)
+                const hashedPassword = await bcrypt.hash("12345678", salt)
+                const newUser = await User.create({ username: name, email: email, password: hashedPassword, role: "admin" })
+                const jwtToken = jwt.sign({ id: newUser._id, email: newUser.email, role: newUser.role }, process.env.TOKEN_KEY)
+                newUser.token = jwtToken;
+                await newUser.save()
+                return res.status(200).json(apiSuccessWithData("User token", { token: jwtToken }))
+            }
+
         }
         // res.status(200).json(apiSuccessWithData("Data is", { username: name, email: email, verified_email: email_verified }))
         // res.status(200).json(apiSuccess("Data is"))

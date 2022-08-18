@@ -96,25 +96,6 @@ const calculateAvgRatingOfSingleProduct = async (req, res) => {
     }
 }
 
-const calculateRatingCountOfSingleProduct = async (req, res) => {
-    try {
-        // const rating5 = await Review.find({ productId: req.params.productId, rating: req.params.count }).count();
-        /* const rating5 = await Review.find({ productId: req.params.productId, rating: 5 }).count();
-        const rating4 = await Review.find({ productId: req.params.productId, rating: 4 }).count();
-        const rating3 = await Review.find({ productId: req.params.productId, rating: 3 }).count();
-        const rating2 = await Review.find({ productId: req.params.productId, rating: 2 }).count();
-        const rating1 = await Review.find({ productId: req.params.productId, rating: 1 }).count();
-        res.status(200).json(apiSuccessWithData(`The count of ${req.params.count} stars rating is`, {
-            rating5: rating5,
-            rating4: rating4,
-            rating3: rating3,
-            rating2: rating2,
-            rating1: rating1,
-        })) */
-    } catch (err) {
-        res.status(500).json(apiError(err.message))
-    }
-}
 
 const calculateRatingsOfSingleProduct = async (req, res) => {
 
@@ -151,24 +132,10 @@ const calculateRatingsOfSingleProduct = async (req, res) => {
             {
                 $project: {
                     star_5: {
-                        $filter: {
-                            input: '$reviews',
-                            as: 'review',
-                            cond: {
-                                $eq: ['$$review.rating', 5],
-                            },
-
-                        },
+                        ...ratingFilter(5),
                     },
                     star_4: {
-                        $filter: {
-                            input: '$reviews',
-                            as: 'review',
-                            cond: {
-                                $eq: ['$$review.rating', 4],
-                            },
-
-                        },
+                        ...ratingFilter(4),
                     },
                     star_3: {
                         ...ratingFilter(3),
@@ -190,149 +157,6 @@ const calculateRatingsOfSingleProduct = async (req, res) => {
                     star_1: { $size: '$star_1' },
                 }
             }
-            // {
-            //     $project:
-            //     {
-            //         "_id": 1,
-            //         "rating":
-            //         {
-            //             $switch:
-            //             {
-            //                 branches: [
-            //                     {
-            //                         case: { $eq: ["$rating", 5] },
-            //                         then: "rating5"
-            //                     },
-            //                     {
-            //                         case: { $eq: ["$rating", 4] },
-            //                         then: "rating4"
-            //                     },
-            //                     {
-            //                         case: { $eq: ["$rating", 3] },
-            //                         then: "rating3"
-            //                     },
-            //                     {
-            //                         case: { $eq: ["$rating", 2] },
-            //                         then: "rating2"
-            //                     },
-            //                     {
-            //                         case: { $eq: ["$rating", 1] },
-            //                         then: "rating1"
-            //                     },
-            //                 ],
-            //                 default: "No ratings found."
-            //             }
-            //         }
-            //     }
-            // },
-            // {
-            //     $group: {
-            //         _id: null,
-            //         _id: "$summary"
-            //     }
-            // },
-            // {
-            //     $match: {
-            //         "rating": "rating5",
-            //         // "rating": rating,
-            //     }
-            // },
-            // {
-            //     $count: "rating"
-            // }
-            // {
-            //     $addFields: {
-            //         count5: { $eq: ["$summary", "rating5"] }
-            //     }
-            // }
-            // {
-            //     $count: { $where: "$summary" === 5 }
-            // }
-            // {
-            //     $group: {
-            //         "_id": null,
-            //         rating5Count: { $sum: "star5" }
-            //     }
-            // }
-            // {
-            //     $count: "summary"
-            // }
-            // {
-            //     $project: {
-
-            //     }
-            // },
-            // {
-
-            // }
-            // {
-            //     $project: {
-            //         allRates: {
-            //             $cond: { if: { $eq: ["$rating", 5] }, then: "rating5", else: "rating4" }
-            //         }
-            //     }
-            // }
-            // {
-            //     $group: {
-            //         _id: null,
-            //         rating5: { $eq: ["$rating", "5"] }
-            //     }
-            // }
-            // {
-            //     $count: 
-            // }
-            // {
-            //     $lookup: {
-            //         from: "Product",
-            //         localField: "productId",
-            //         foreignField: "_id",
-            //         as: "myField"
-            //     }
-            // },
-            // {
-            //     $match: {
-            //         rating: 4,
-            //     }
-            // }
-            // {
-            //     $addFields: {
-            //         star5: {
-            //             $match: { "$rating": "5" }
-            //         },
-            //         // star4: { $eq: ["$rating", 4] },
-            //         // star3: { $eq: ["$rating", 3] },
-            //         // star2: { $eq: ["$rating", 2] },
-            //         // star1: { $eq: ["$rating", 1] },
-            //         // star4: { $eq: ["$rating", 4] },
-            //         // star3: { $eq: ["$rating", 3] },
-            //         // star2: { $eq: ["$rating", 2] },
-            //         // star1: { $eq: ["$rating", 1] },
-
-            //         // star4: { "rating": 4 },
-            //         // star3: { "rating": 3 },
-            //         // star2: { "rating": 2 },
-            //         // star1: { "rating": 1 },
-            //     }
-            // },
-            // {
-            //     $project: {
-            //         // rating: 1,
-            //         // _id: 0,
-            //         // createdAt: 1,
-            //         // star5: 1,
-            //         // star4: 1,
-            //         // star3: 1,
-            //         // star2: 1,
-            //         // star1: 1
-            //     }
-            // },
-            // {
-            //     $group: {
-            //         _id: "",
-            //         totalNumberOfProductsPurchased: { "$sum": "star5" }
-            //     }
-            // }
-
         ];
         const result = await product.aggregate(pipeline)
         res.status(200).json(apiSuccessWithData("The count of stars rating is", result))
@@ -349,8 +173,7 @@ module.exports = {
     getAllReviewsOfProduct,
     calculateAvgRatingOfAllProducts,
     calculateAvgRatingOfSingleProduct,
-    calculateRatingsOfSingleProduct,
-    calculateRatingCountOfSingleProduct
+    calculateRatingsOfSingleProduct
 }
 
 /* 

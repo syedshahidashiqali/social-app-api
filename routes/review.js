@@ -7,7 +7,6 @@ const {
   calculateAvgRatingOfAllProducts,
   calculateAvgRatingOfSingleProduct,
   calculateRatingsOfSingleProduct,
-  calculateRatingCountOfSingleProduct
 } = require("../controllers/review")
 const { verifyToken: auth } = require("../middleware/authMiddleware")
 const { validationMiddleWare } = require("../middleware/validationMiddleware");
@@ -21,6 +20,5 @@ router.get("/product/:productId", auth, getAllReviewsOfProduct)
 router.get("/averageRating/all", auth, calculateAvgRatingOfAllProducts)
 router.get("/averageRating/single/:productId", auth, calculateAvgRatingOfSingleProduct)
 router.get("/allRatings/single/:productId", calculateRatingsOfSingleProduct)
-router.get("/allRatings/single/:productId/:count", calculateRatingCountOfSingleProduct)
 
 module.exports = router;
