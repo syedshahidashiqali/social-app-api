@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const path = require("path");
 const cors = require("cors");
-
+const admin = require('sriracha');
 const { fileFilter, fileStorage } = require("./config/multerConfig1")
 const multer = require("multer")
 // import connection DB func
@@ -47,6 +47,7 @@ app.use(
 );
 app.use(morgan('dev'))
 app.use(cors())
+app.use('/admin', admin());
 
 // Routes
 app.use("/api/v1/auth", authRoutes);
